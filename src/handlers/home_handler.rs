@@ -37,7 +37,7 @@ fn find_all_frontmatters() -> Result<Vec<Frontmatter>, std::io::Error> {
             Ok(fm) => {
                 if fm.path().is_file() {
                     let fm_content = fs::read_to_string(fm.path())?;
-                    let frontmatter: Frontmatter = toml::from_str(&fm_content)?;
+                    let frontmatter: Frontmatter = toml::from_str(&fm_content).map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;
 
                     frontmatters.push(frontmatter);
                 }
